@@ -1,29 +1,32 @@
 import React, {useState} from 'react';
 import {Button, Modal} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import "../../Styles.css"
 
-const ModalLogin = (props) => {
+const ModalRegistration = (props) => {
 
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [password1, setPassword1] = useState('')
+    const [password2, setPassword2] = useState('')
 
     const [emailError, setEmailError] = useState('')
-    const [passwordError, setPasswordError] = useState('')
+    const [passwordError1, setPasswordError1] = useState('')
+    const [passwordError2, setPasswordError2] = useState('')
 
     const Click = () => {
 
         setEmailError(email)
-        setPasswordError(password)
-
+        setPasswordError1(password1)
+        setPasswordError2(password2)
     }
 
     const hideModal = () => {
 
         setEmail('')
-        setPassword('')
+        setPassword1('')
+        setPassword2('')
         setEmailError('')
-        setPasswordError('')
+        setPasswordError1('')
+        setPasswordError2('')
 
         props.setShow(false)
     }
@@ -44,7 +47,7 @@ const ModalLogin = (props) => {
 
                         <Modal.Title id="contained-modal-title-vcenter"
                                      style={{textAlign: 'center', fontSize: 30, width: "100%", marginLeft: "5 rem"}}>
-                            Авторизация
+                            Регистрация
                         </Modal.Title>
 
                         <Form>
@@ -74,15 +77,34 @@ const ModalLogin = (props) => {
                                         id="floatingPasswordCustom"
                                         type="password"
                                         placeholder="Password"
-                                        value={password}
+                                        value={password1}
                                         onChange={(value) => {
-                                            setPassword(value.target.value)
+                                            setPassword1(value.target.value)
                                         }}
-                                        isInvalid={passwordError.length !== 0}
+                                        isInvalid={passwordError1.length !== 0}
                                     />
-                                    <Form.Control.Feedback type="invalid" tooltip>{passwordError}</Form.Control.Feedback>
+                                    <Form.Control.Feedback type="invalid" tooltip>{passwordError1}</Form.Control.Feedback>
 
                                     <label htmlFor="floatingPasswordCustom">Пароль</label>
+                                </Form.Floating>
+                            </Form.Group>
+
+                            <Form.Group className="mb-3" controlId="formBasicEmail" style={{width: "90%", margin: "auto"}}>
+                                <div style={{height: "1rem"}}/>
+                                <Form.Floating className="mb-3">
+                                    <Form.Control
+                                        id="floatingPasswordCustom"
+                                        type="password"
+                                        placeholder="Password"
+                                        value={password2}
+                                        onChange={(value) => {
+                                            setPassword2(value.target.value)
+                                        }}
+                                        isInvalid={passwordError2.length !== 0}
+                                    />
+                                    <Form.Control.Feedback type="invalid" tooltip>{passwordError2}</Form.Control.Feedback>
+
+                                    <label htmlFor="floatingPasswordCustom">Повторите пароль</label>
                                 </Form.Floating>
                             </Form.Group>
 
@@ -98,4 +120,4 @@ const ModalLogin = (props) => {
     );
 };
 
-export default ModalLogin;
+export default ModalRegistration;

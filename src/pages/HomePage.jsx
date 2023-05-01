@@ -1,19 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import NavbarHome from "../components/navbar/NavbarHome";
 import ModalLogin from "../components/modal/ModalLogin";
+import ModalRegistration from "../components/modal/ModalRegistration";
 
 
 const HomePage = () => {
 
-    const [modalLoginShow, setModalLoginShow] = React.useState(false);
+    const [modalLoginShow, setModalLoginShow] = useState(false);
+    const [modalRegistrationShow, setModalRegistrationShow] = useState(false);
 
     return (
         <div>
-            <NavbarHome setModalLoginShow={setModalLoginShow}/>
+            <NavbarHome setModalLoginShow={setModalLoginShow} setModalRegistrationShow={setModalRegistrationShow}/>
             <div>Home</div>
             <ModalLogin
                 show={modalLoginShow}
-                onHide={() => setModalLoginShow(false)}
+                setShow={setModalLoginShow}
+            />
+            <ModalRegistration
+                show={modalRegistrationShow}
+                setShow={setModalRegistrationShow}
             />
         </div>
     );

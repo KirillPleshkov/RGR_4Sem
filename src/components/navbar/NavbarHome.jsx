@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Container, Nav, Navbar, NavLink} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 
-const NavbarHome = ({setModalLoginShow}) => {
+const NavbarHome = ({setModalLoginShow, setModalRegistrationShow}) => {
 
     return (
         <>
@@ -18,7 +18,7 @@ const NavbarHome = ({setModalLoginShow}) => {
                         <Nav className="me-auto"/>
                         <Nav>
                                 <Nav.Link onClick={() => setModalLoginShow(true)}>Войти</Nav.Link>
-                                <Nav.Link onClick={() => setModalLoginShow(true)}>Регистрация</Nav.Link>
+                                <Nav.Link onClick={() => setModalRegistrationShow(true)}>Регистрация</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
