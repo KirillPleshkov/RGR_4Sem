@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {Button, Modal} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import axios from "axios";
+import {useCookies} from "react-cookie";
 
 const ModalRegistration = (props) => {
 
@@ -9,14 +11,39 @@ const ModalRegistration = (props) => {
     const [password2, setPassword2] = useState('')
 
     const [emailError, setEmailError] = useState('')
-    const [passwordError1, setPasswordError1] = useState('')
-    const [passwordError2, setPasswordError2] = useState('')
+    const [passwordError, setPasswordError] = useState('')
+
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
     const Click = () => {
+        removeCookie('token');
+        const config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:3000/users/registration',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : {
+                email: email,
+                password1: password1,
+                password2: password2
+            }
+        };
 
-        setEmailError(email)
-        setPasswordError1(password1)
-        setPasswordError2(password2)
+        axios.request(config)
+            .then((response) => {
+                setCookie('token', response.data.token);
+                hideModal()
+            })
+            .catch((error) => {
+                const err = error.response.data.error
+                if(err.email)
+                    setEmailError(err.email)
+                if(err.password)
+                    setPasswordError(err.password)
+            });
+
     }
 
     const hideModal = () => {
@@ -25,8 +52,7 @@ const ModalRegistration = (props) => {
         setPassword1('')
         setPassword2('')
         setEmailError('')
-        setPasswordError1('')
-        setPasswordError2('')
+        setPasswordError('')
 
         props.setShow(false)
     }
@@ -61,6 +87,7 @@ const ModalRegistration = (props) => {
                                         value={email}
                                         onChange={(value) => {
                                             setEmail(value.target.value)
+                                            setEmailError('')
                                         }}
                                         isInvalid={emailError.length !== 0}
                                     />
@@ -80,10 +107,10 @@ const ModalRegistration = (props) => {
                                         value={password1}
                                         onChange={(value) => {
                                             setPassword1(value.target.value)
+                                            setPasswordError('')
                                         }}
-                                        isInvalid={passwordError1.length !== 0}
+                                        isInvalid={passwordError.length !== 0}
                                     />
-                                    <Form.Control.Feedback type="invalid" tooltip>{passwordError1}</Form.Control.Feedback>
 
                                     <label htmlFor="floatingPasswordCustom">Пароль</label>
                                 </Form.Floating>
@@ -99,10 +126,11 @@ const ModalRegistration = (props) => {
                                         value={password2}
                                         onChange={(value) => {
                                             setPassword2(value.target.value)
+                                            setPasswordError('')
                                         }}
-                                        isInvalid={passwordError2.length !== 0}
+                                        isInvalid={passwordError.length !== 0}
                                     />
-                                    <Form.Control.Feedback type="invalid" tooltip>{passwordError2}</Form.Control.Feedback>
+                                    <Form.Control.Feedback type="invalid" tooltip>{passwordError}</Form.Control.Feedback>
 
                                     <label htmlFor="floatingPasswordCustom">Повторите пароль</label>
                                 </Form.Floating>

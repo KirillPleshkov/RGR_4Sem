@@ -2,19 +2,43 @@ import React, {useState} from 'react';
 import {Button, Modal} from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import "../../Styles.css"
+import axios from "axios";
+import {useCookies} from "react-cookie";
 
 const ModalLogin = (props) => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const [emailError, setEmailError] = useState('')
-    const [passwordError, setPasswordError] = useState('')
+    const [error, setError] = useState('')
+
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
     const Click = () => {
 
-        setEmailError(email)
-        setPasswordError(password)
+        removeCookie('token');
+        const config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:3000/users/login',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data : {
+                email: email,
+                password: password
+            }
+        };
+
+        axios.request(config)
+            .then((response) => {
+                setCookie('token', response.data.token);
+                hideModal()
+            })
+            .catch((error) => {
+                const err = error.response.data.error
+                setError(err)
+            });
 
     }
 
@@ -22,8 +46,7 @@ const ModalLogin = (props) => {
 
         setEmail('')
         setPassword('')
-        setEmailError('')
-        setPasswordError('')
+        setError('')
 
         props.setShow(false)
     }
@@ -59,9 +82,8 @@ const ModalLogin = (props) => {
                                         onChange={(value) => {
                                             setEmail(value.target.value)
                                         }}
-                                        isInvalid={emailError.length !== 0}
+                                        isInvalid={error.length !== 0}
                                     />
-                                    <Form.Control.Feedback type="invalid" tooltip>{emailError}</Form.Control.Feedback>
 
                                     <label htmlFor="floatingInputCustom">Электронная почта</label>
                                 </Form.Floating>
@@ -78,9 +100,9 @@ const ModalLogin = (props) => {
                                         onChange={(value) => {
                                             setPassword(value.target.value)
                                         }}
-                                        isInvalid={passwordError.length !== 0}
+                                        isInvalid={error.length !== 0}
                                     />
-                                    <Form.Control.Feedback type="invalid" tooltip>{passwordError}</Form.Control.Feedback>
+                                    <Form.Control.Feedback type="invalid" tooltip>{error}</Form.Control.Feedback>
 
                                     <label htmlFor="floatingPasswordCustom">Пароль</label>
                                 </Form.Floating>
