@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import NavbarMain from "../components/navbar/NavbarMain";
-const HomePage = () => {
 
+const Configurator = () => {
     return (
         <div>
             <NavbarMain/>
-            <div>Home</div>
+            Конфигуратор
         </div>
     );
 };
 
-export default HomePage;
+export default Configurator;

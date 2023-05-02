@@ -20,7 +20,7 @@ const ModalRegistration = (props) => {
         const config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://localhost:3000/users/registration',
+            url: '/users/registration',
             headers: {
                 'Content-Type': 'application/json'
             },
