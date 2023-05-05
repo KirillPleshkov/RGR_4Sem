@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {CloseButton} from "react-bootstrap";
 import axios from "axios";
+import ModalComponentInfo from "../modal/ModalComponentInfo";
+import {Card} from "react-bootstrap";
 
-const MyInfo = ({element}) => {
+const MyInfo = ({element, setSelectedElement}) => {
 
     const [price, setPrice] = useState(null)
+    const [isModalInfoShow, setIsModalInfoShow] = useState(false)
 
     useEffect(() => {
 
         const config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://localhost:3001/ram/get-cost',
+            url: '/ram/get-cost',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -37,12 +40,14 @@ const MyInfo = ({element}) => {
                 (price !== null) ?
                     <div style={{marginTop: "-5px"}}>
                         <div style={{textAlign: "center", whiteSpace: "nowrap"}}>{price}</div>
-                        <div style={{fontSize: 12, margin: "auto", textAlign: "center"}}>Подробнее</div>
+                        <div onClick={() => setIsModalInfoShow(true)} style={{fontSize: 12, margin: "auto", textAlign: "center", cursor: "pointer", textDecoration: "underline"}}>Подробнее</div>
                     </div> :
                     <div style={{textAlign: "center", whiteSpace: "nowrap"}}>Подождите...</div>
             }
 
-            <CloseButton style={{marginLeft: "5rem", marginTop: "3px"}}/>
+            <CloseButton onClick={() => setSelectedElement(null)} style={{marginLeft: "5rem", marginTop: "3px"}}/>
+
+            <ModalComponentInfo show={isModalInfoShow} setShow={setIsModalInfoShow} value={element.value}/>
         </div>
     );
 };
