@@ -1,35 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Modal} from "react-bootstrap";
-import Form from "react-bootstrap/Form";
-import axios from "axios";
-import '../../ComponentInfo.css'
+import React from 'react';
+import {Modal} from "react-bootstrap";
+import MyComponentInfo from "../UI/MyComponentInfo";
 
-const ModalComponentInfo = ({show, setShow, value}) => {
-
-    const [content, setContent] = useState()
-
-    useEffect(() => {
-
-        const config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: '/ram/get-components',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data : {value: value}
-        };
-
-        axios.request(config)
-            .then((response) => {
-                console.log(response.data)
-                setContent(response.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-    })
+const ModalComponentInfo = ({show, setShow, content, componentName, setCurrentContent}) => {
 
     return (
         <>
@@ -40,10 +13,19 @@ const ModalComponentInfo = ({show, setShow, value}) => {
                 centered
                 onHide={() => setShow(false)}
             >
-                <Modal.Header closeButton/>
+                <Modal.Header closeButton>
+                    <Modal.Title style={{color: "#599191"}}>{componentName}</Modal.Title>
+                </Modal.Header>
 
                 <Modal.Body>
-                    <div dangerouslySetInnerHTML={{ __html: content }} />
+                    {
+                        (content !== null) ?
+                            content.map((element, i) => (
+                                <MyComponentInfo key={i} content={element} setCurrentContent={setCurrentContent}/>
+                            )) :
+                            <></>
+                    }
+
                 </Modal.Body>
             </Modal>
         </>

@@ -8,6 +8,8 @@ const RamCell = () => {
 
     const [dropDownElements, setDropDownElements] = useState(null)
     const [selectedElement, setSelectedElement] = useState(null)
+    const urlName = 'ram'
+    const componentName = 'Оперативная память'
 
     useEffect(() => {
 
@@ -20,6 +22,7 @@ const RamCell = () => {
         axios.request(config)
             .then((response) => {
                 setDropDownElements(response.data.result)
+                console.log(1111)
             })
             .catch((error) => {
                 console.log(error)
@@ -42,8 +45,17 @@ const RamCell = () => {
                         </div>
                         {
                             (selectedElement === null) ?
-                                <MyDropDown name={' Выберите'} elements={dropDownElements} setSelectedElement={setSelectedElement}/> :
-                                <MyInfo element={selectedElement} setSelectedElement={setSelectedElement}/>
+                                <MyDropDown
+                                    name={' Выберите'}
+                                    elements={dropDownElements}
+                                    setSelectedElement={setSelectedElement}
+                                /> :
+                                <MyInfo
+                                    element={selectedElement}
+                                    setSelectedElement={setSelectedElement}
+                                    urlName={urlName}
+                                    componentName={componentName}
+                                />
                         }
                     </div>
                 </Card.Body>

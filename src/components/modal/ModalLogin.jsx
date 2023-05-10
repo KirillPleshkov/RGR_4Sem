@@ -34,6 +34,7 @@ const ModalLogin = (props) => {
             .then((response) => {
                 setCookie('token', response.data.token);
                 hideModal()
+                console.log(1111)
             })
             .catch((error) => {
                 const err = error.response.data.error
